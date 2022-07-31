@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 ANSWER_1: int = 0
 ANSWER_2: int = 1
@@ -123,7 +123,12 @@ a_1_5 = "Electronic discovery"
 q2: str = "Which functionality would be helpful in your line of work?"
 
 
-def question_2(*answers: str) -> str:
+def question_2(
+        answer_1: str = None,
+        answer_2: str = None,
+        answer_3: str = None,
+        answer_4: str = None
+) -> str:
     answer_options: Dict[int, str] = {
         ANSWER_1: (
             "Creating, reading, updating and deleting entries in a database"
@@ -187,23 +192,34 @@ def question_2(*answers: str) -> str:
     }
 
     if (
-            len(answers) == 3
-            and answer_options[ANSWER_1] in answers
-            and answer_options[ANSWER_3] in answers
-            and answer_options[ANSWER_4] in answers
+            not answer_2
+            and answer_1 == answer_options[ANSWER_1]
+            and answer_3 == answer_options[ANSWER_3]
+            and answer_4 == answer_options[ANSWER_4]
     ):
         report: str = all_reports["report_1"]
     elif(
-            len(answers) == 2
-            and answer_options[ANSWER_2] in answers
-            and answer_options[ANSWER_4] in answers
+            not any([answer_1, answer_3])
+            and answer_2 == answer_options[ANSWER_2]
+            and answer_4 == answer_options[ANSWER_4]
     ):
         report: str = all_reports["report_2"]
     elif(
-            len(answers) == 1
-            and (answer_options[ANSWER_1] in answers
-            or answer_options[ANSWER_3] in answers
-            or answer_options[ANSWER_4] in answers)
+            not answer_2
+            and (
+                    (
+                            answer_1 == answer_options[ANSWER_1]
+                            and not any([answer_3, answer_4])
+                    )
+            or (
+                            answer_3 == answer_options[ANSWER_3]
+                            and not any([answer_1, answer_4])
+                    )
+            or (
+                            answer_4 == answer_options[ANSWER_4]
+                            and not any([answer_1, answer_3])
+                    )
+            )
     ):
         report: str = all_reports["report_3"]
     else:
@@ -219,27 +235,27 @@ a_2_4 = "Retrieving data from third-party sources"
 
 # print(
 #     f"report if answers 1, 3 and 4 are chosen:\n"
-#     f"{question_2(a1, a3, a4)}\n"
+#     f"{question_2(answer_1=a_2_1, answer_3=a_2_3, answer_4=a_2_4)}\n"
 # )
 # print(
 #     f"report if answers 2 and 4 are chosen:\n"
-#     f"{question_2(a2, a4)}\n"
+#     f"{question_2(answer_2=a_2_2, answer_4=a_2_4)}\n"
 # )
 # print(
 #     f"report if answer 1 is chosen:\n"
-#     f"{question_2(a1)}\n"
+#     f"{question_2(answer_1=a_2_1)}\n"
 # )
 # print(
 #     f"report if answer 3 is chosen:\n"
-#     f"{question_2(a3)}\n"
+#     f"{question_2(answer_3=a_2_3)}\n"
 # )
 # print(
 #     f"report if answer 4 is chosen:\n"
-#     f"{question_2(a4)}\n"
+#     f"{question_2(answer_4=a_2_4)}\n"
 # )
 # print(
 #     f"report for other combinations:\n"
-#     f"{question_2(a2)}\n"
+#     f"{question_2(answer_2=a_2_2)}\n"
 # )
 
 
@@ -340,7 +356,7 @@ a_3_1_h = 1
 q4: str = "Do you work remotely (from home)?"
 
 
-def question_4(answer_1: str, *answers_yes: str) -> str:
+def question_4(answer_1: str, **answers_yes: str) -> str:
     answer_1_options: Dict[int, str] = {
         ANSWER_YES: "Yes",
         ANSWER_NO: "No",
@@ -412,14 +428,14 @@ def question_4(answer_1: str, *answers_yes: str) -> str:
     else:
         if (
             len(answers_yes) == 2
-            and answer_yes_options[ANSWER_YES_CHOICE_2] in answers_yes
-            and answer_yes_options[ANSWER_YES_CHOICE_3] in answers_yes
+            and answer_yes_options[ANSWER_YES_CHOICE_2] in answers_yes.values()
+            and answer_yes_options[ANSWER_YES_CHOICE_3] in answers_yes.values()
         ):
             report: str = all_reports["report_yes_2_3"]
         elif (
             len(answers_yes) == 2
-            and answer_yes_options[ANSWER_YES_CHOICE_1] in answers_yes
-            and answer_yes_options[ANSWER_YES_CHOICE_4] in answers_yes
+            and answer_yes_options[ANSWER_YES_CHOICE_1] in answers_yes.values()
+            and answer_yes_options[ANSWER_YES_CHOICE_4] in answers_yes.values()
         ):
             report: str = all_reports["report_yes_1_4"]
         else:
@@ -436,26 +452,37 @@ a_4_yes_2 = "Email correspondence"
 a_4_yes_3 = "Live chat correspondence"
 a_4_yes_4 = "Phone calls"
 
-print(
-    f"report if ANSWER_I_DONT_KNOW:\n"
-    f"{question_4(answer_1=a_4_dont_know)}\n"
-)
-print(
-    f"report if ANSWER_NO:\n"
-    f"{question_4(answer_1=a_4_no)}\n"
-)
-print(
-    f"report if ANSWER_YES and choices 2 and 3 are indicated:\n"
-    f"{question_4(a_4_yes, a_4_yes_2, a_4_yes_3)}\n"
-)
-print(
-    f"report if ANSWER_YES and choices 1 and 4 are indicated:\n"
-    f"{question_4(a_4_yes, a_4_yes_1, a_4_yes_4)}\n"
-)
-print(
-    f"report if ANSWER_YES and any other combination is indicated:\n"
-    f"{question_4(a_4_yes, a_4_yes_1)}\n"
-)
+# func_args_2_3 = question_4(
+#     answer_1=a_4_yes,
+#     answer_yes_2=a_4_yes_2,
+#     answer_yes_4=a_4_yes_3
+# )
+# func_args_1_4 = question_4(
+#     answer_1=a_4_yes,
+#     answer_yes_1=a_4_yes_1,
+#     answer_yes_4=a_4_yes_4
+# )
+#
+# print(
+#     f"report if ANSWER_I_DONT_KNOW:\n"
+#     f"{question_4(answer_1=a_4_dont_know)}\n"
+# )
+# print(
+#     f"report if ANSWER_NO:\n"
+#     f"{question_4(answer_1=a_4_no)}\n"
+# )
+# print(
+#     f"report if ANSWER_YES and choices 2 and 3 are indicated:\n"
+#     f"{func_args_2_3}\n"
+# )
+# print(
+#     f"report if ANSWER_YES and choices 1 and 4 are indicated:\n"
+#     f"{func_args_1_4}\n"
+# )
+# print(
+#     f"report if ANSWER_YES and any other combination is indicated:\n"
+#     f"{question_4(answer_1=a_4_yes, answer_yes_1=a_4_yes_1)}\n"
+# )
 
 
 # # Define survey answers
@@ -466,16 +493,45 @@ print(
 # report.generate() # Outputs report text which is generated based on survey answers
 
 
-# def generate_report(
-#         q1_answer,
-#         q3_time_period,
-#         q3_unit_of_time,
-#         q4_answer_1,
-#         *q2_answers,
-#         **q2_and_q4_answers
-# ) -> str:
-#     report: str = ""
-#
-#
-#
-#     return report
+def generate_report(
+        q1_answer: str = None,
+        q2_answer_1: str = None,
+        q2_answer_2: str = None,
+        q2_answer_3: str = None,
+        q2_answer_4: str = None,
+        q3_time_period: int = None,
+        q3_unit_of_time: str = None,
+        q4_answer_1: str = None,
+        **q4_answers_yes: str
+
+) -> str:
+    report: str = ""
+
+    q1_report: str = question_1(q1_answer)
+    q2_report: str = question_2(
+        q2_answer_1, q2_answer_2, q2_answer_3, q2_answer_4
+    )
+    q3_report: str = question_3(q3_time_period, q3_unit_of_time)
+    q4_report: str = question_4(q4_answer_1, **q4_answers_yes)
+
+    report_list: List[str] = [q1_report, q2_report, q3_report, q4_report]
+
+    for report_part in report_list:
+        report += f"{report_part}\n=====\n"
+
+    return report
+
+
+print(
+    generate_report(
+        q1_answer=a_1_1,
+        q2_answer_1=a_2_1,
+        q2_answer_3=a_2_3,
+        q2_answer_4=a_2_4,
+        q3_time_period=a_3_241_m,
+        q3_unit_of_time=a_3_minutes,
+        q4_answer_1=a_4_yes,
+        q4_answer_yes_2=a_4_yes_2,
+        q4_answer_yes_3=a_4_yes_3
+    )
+)
