@@ -6,6 +6,15 @@ ANSWER_3: int = 2
 ANSWER_4: int = 3
 ANSWER_5: int = 4
 
+ANSWER_I_DONT_KNOW: int = 5
+ANSWER_NO: int = 6
+ANSWER_YES: int = 7
+ANSWER_YES_CHOICE_1: int = 8
+ANSWER_YES_CHOICE_2: int = 9
+ANSWER_YES_CHOICE_3: int = 10
+ANSWER_YES_CHOICE_4: int = 11
+
+
 q1: str = "Which field are you working in?"
 
 
@@ -91,6 +100,12 @@ def question_1(answer: str) -> str:
     return answer_reports[answer]
 
 
+a_1_1 = "Customer Support"
+a_1_2 = "Engineering and technical fields"
+a_1_3 = "Pharmaceutical and biotechnology areas"
+a_1_4 = "Scientific and academic fields"
+a_1_5 = "Electronic discovery"
+
 # print(f"report for answer_1:\n{question_1('Customer Support')}\n")
 # print(
 #     f"report for answer_2:\n{question_1('Engineering and technical fields')}\n"
@@ -105,21 +120,10 @@ def question_1(answer: str) -> str:
 # print(f"report for answer_5:\n{question_1('Electronic discovery')}")
 
 
-# q2: str = ""
-#
-#
-# def question_2(answer: str) -> str:
-#     all_reports: Dict[str, str] = {}
-#
-#     reply_reports: Dict[str, str] = {}
-#
-#     return reply_reports[answer]
+q2: str = "Which functionality would be helpful in your line of work?"
 
 
-q3: str = ""
-
-
-def question_3(*answers: str) -> str:
+def question_2(*answers: str) -> str:
     answer_options: Dict[int, str] = {
         ANSWER_1: (
             "Creating, reading, updating and deleting entries in a database"
@@ -188,52 +192,290 @@ def question_3(*answers: str) -> str:
             and answer_options[ANSWER_3] in answers
             and answer_options[ANSWER_4] in answers
     ):
-        report = all_reports["report_1"]
+        report: str = all_reports["report_1"]
     elif(
             len(answers) == 2
             and answer_options[ANSWER_2] in answers
             and answer_options[ANSWER_4] in answers
     ):
-        report = all_reports["report_2"]
+        report: str = all_reports["report_2"]
     elif(
             len(answers) == 1
             and (answer_options[ANSWER_1] in answers
             or answer_options[ANSWER_3] in answers
             or answer_options[ANSWER_4] in answers)
     ):
-        report = all_reports["report_3"]
+        report: str = all_reports["report_3"]
     else:
-        report = all_reports["report_4"]
+        report: str = all_reports["report_4"]
 
     return report
 
 
-# a1 = "Creating, reading, updating and deleting entries in a database"
-# a2 = "Computations"
-# a3 = "Text-based data processing"
-# a4 = "Retrieving data from third-party sources"
-#
+a_2_1 = "Creating, reading, updating and deleting entries in a database"
+a_2_2 = "Computations"
+a_2_3 = "Text-based data processing"
+a_2_4 = "Retrieving data from third-party sources"
+
 # print(
 #     f"report if answers 1, 3 and 4 are chosen:\n"
-#     f"{question_3(a1, a3, a4)}\n"
+#     f"{question_2(a1, a3, a4)}\n"
 # )
 # print(
 #     f"report if answers 2 and 4 are chosen:\n"
-#     f"{question_3(a2, a4)}\n"
+#     f"{question_2(a2, a4)}\n"
 # )
 # print(
 #     f"report if answer 1 is chosen:\n"
-#     f"{question_3(a1)}\n"
+#     f"{question_2(a1)}\n"
 # )
 # print(
 #     f"report if answer 3 is chosen:\n"
-#     f"{question_3(a3)}\n"
+#     f"{question_2(a3)}\n"
 # )
 # print(
 #     f"report if answer 4 is chosen:\n"
-#     f"{question_3(a4)}\n"
+#     f"{question_2(a4)}\n"
 # )
 # print(
 #     f"report for other combinations:\n"
-#     f"{question_3(a2)}\n"
+#     f"{question_2(a2)}\n"
 # )
+
+
+q3: str = "How long on average does it take you to process one request/task?"
+
+
+def question_3(time_period: int, unit_of_time: str) -> str:
+    all_reports: Dict[str, str] = {
+        "report_1": f"Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    f" Recommended shift duration: "
+                    f"{round(time_period * 1.5, 1)} {unit_of_time} Vivamus "
+                    f"hendrerit "
+                    f"arcu eros, nec bibendum mi sodales id. Ut auctor nisl a "
+                    f"placerat porttitor. Duis at tortor posuere, gravida "
+                    f"sapien in, fermentum ligula.\n\nQuisque eu ipsum "
+                    f"lobortis, hendrerit justo vitae, varius nisi. Etiam in "
+                    f"leo feugiat purus facilisis tempor. Fusce congue metus "
+                    f"non massa mollis, id imperdiet ex viverra. Cras "
+                    f"Recommended shift duration: "
+                    f"{round(time_period * 1.5, 1)} {unit_of_time} imperdiet "
+                    f"lectus at "
+                    f"imperdiet ornare.",
+        "report_2": f"Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    f" Integer porta at odio ac rhoncus. "
+                    f"Recommended shift duration: "
+                    f"{round(time_period * 1.5 * 3.5, 1)} {unit_of_time} "
+                    f"Integer viverra porta "
+                    f"eros nec ultrices. Nullam ante sem, tincidunt vitae orci"
+                    f" id, vestibulum auctor risus. Phasellus sit amet "
+                    f"lobortis eros. Maecenas convallis dolor ex, vel congue "
+                    f"ipsum ornare eu.\n\nNunc in mattis dolor, quis posuere "
+                    f"lorem. Recommended shift duration: "
+                    f"{round(time_period * 1.5 * 3.5, 1)} {unit_of_time} "
+                    f"Nullam "
+                    f"condimentum semper diam, lacinia tempor eros tristique "
+                    f"ut. Etiam ultrices imperdiet tortor at eleifend. Aenean "
+                    f"lorem felis, volutpat eu euismod at, congue id erat. "
+                    f"Duis luctus quam vitae mattis tempus.",
+        "report_3": f"Sed at aliquam ex. Vestibulum maximus erat in justo "
+                    f"maximus posuere. Recommended shift duration: "
+                    f"{round(time_period * 1.5 * 2.67, 1)} {unit_of_time} "
+                    f"Suspendisse tellus magna, faucibus scelerisque dapibus "
+                    f"et, luctus egestas nibh. Pellentesque eleifend mauris ac"
+                    f" volutpat ullamcorper.\n\nAenean vitae velit et nulla "
+                    f"egestas viverra sit amet eu eros. "
+                    f"Recommended shift duration: "
+                    f"{round(time_period * 1.5 * 2.67, 1)} {unit_of_time} Nunc"
+                    f" congue rutrum sem"
+    }
+
+    if (
+            (time_period > 240 and unit_of_time == "minutes")
+            or (time_period > 4 and unit_of_time == "hours")
+    ):
+        report: str = all_reports["report_1"]
+    elif (
+            (time_period < 120 and unit_of_time == "minutes")
+            or (time_period < 2 and unit_of_time == "hours")
+    ):
+        report: str = all_reports["report_2"]
+    else:
+        report: str = all_reports["report_3"]
+
+    return report
+
+
+a_3_minutes = "minutes"
+a_3_hours = "hours"
+a_3_241_m = 241
+a_3_119_m = 119
+a_3_200_m = 200
+a_3_5_h = 5
+a_3_1_h = 1
+
+
+# print(
+#     f"report if it takes more than 240m:\n"
+#     f"{question_3(time_period=241, unit_of_time='minutes')}\n"
+# )
+# print(
+#     f"report if it takes more than 4h:\n"
+#     f"{question_3(time_period=5, unit_of_time='hours')}\n"
+# )
+# print(
+#     f"report if it takes less than 120m:\n"
+#     f"{question_3(time_period=119, unit_of_time='minutes')}\n"
+# )
+# print(
+#     f"report if it takes less than 2h:\n"
+#     f"{question_3(time_period=1, unit_of_time='hours')}\n"
+# )
+# print(
+#     f"report in any other cases:\n"
+#     f"{question_3(time_period=200, unit_of_time='minutes')}\n"
+# )
+
+
+q4: str = "Do you work remotely (from home)?"
+
+
+def question_4(answer_1: str, *answers_yes: str) -> str:
+    answer_1_options: Dict[int, str] = {
+        ANSWER_YES: "Yes",
+        ANSWER_NO: "No",
+        ANSWER_I_DONT_KNOW: "I don't know",
+    }
+
+    answer_yes_options: Dict[int, str] = {
+        ANSWER_YES_CHOICE_1: (
+            "Gathering and processing data, developing solutions by yourself"
+        ),
+        ANSWER_YES_CHOICE_2: "Email correspondence",
+        ANSWER_YES_CHOICE_3: "Live chat correspondence",
+        ANSWER_YES_CHOICE_4: "Phone calls",
+    }
+
+    all_reports: Dict[str, str] = {
+        "report_dont_know": "Phasellus ac sem ornare, ANSWER_I_DONT_KNOW "
+                            "euismod tellus id, sagittis felis. Nullam viverra"
+                            " est nibh, et dignissim elit tincidunt nec. "
+                            "Integer vel dolor aliquam, eleifend metus in, "
+                            "tincidunt erat. Nam id facilisis tortor.\n\nDonec"
+                            " malesuada, libero nec tincidunt "
+                            "ANSWER_I_DONT_KNOW commodo, nulla velit imperdiet"
+                            " mauris, sit amet cursus dui quam maximus justo. "
+                            "In accumsan nisi ut orci finibus ullamcorper. "
+                            "Aliquam consequat risus non orci dapibus, id "
+                            "commodo erat egestas.",
+        "report_no": "Nam maximus et massa laoreet congue. In facilisis "
+                     "egestas neque. Nullam ac euismod nibh. ANSWER_NO Aenean "
+                     "pulvinar lacinia ligula, nec lobortis magna accumsan "
+                     "sed.\n\nDuis tempor pellentesque quam. ANSWER_NO Sed non"
+                     " est dui. Sed commodo odio vel augue pellentesque, et "
+                     "sagittis dolor tristique. Phasellus mollis magna eu "
+                     "egestas viverra. Cras elementum erat vel libero "
+                     "venenatis, ut suscipit nibh scelerisque.",
+        "report_yes_2_3": "Mauris viverra lobortis ante, eget faucibus felis "
+                          "pulvinar et. Suspendisse urna diam, ANSWER_YES and "
+                          "ANSWER_YES_CHOICE_2, ANSWER_YES_CHOICE_3 elementum "
+                          "nec tincidunt ornare, convallis condimentum nisi."
+                          "\n\nNam gravida ac magna eget cursus. ANSWER_YES "
+                          "and ANSWER_YES_CHOICE_2, ANSWER_YES_CHOICE_3 "
+                          "Maecenas fermentum lacus eu tempor condimentum. "
+                          "Quisque tristique viverra justo, et mollis magna "
+                          "ornare a. In lacus elit, vestibulum a ex facilisis,"
+                          " faucibus gravida dui. Morbi consectetur egestas "
+                          "tempor. Sed neque ex, condimentum congue facilisis "
+                          "non, aliquet sed odio.",
+        "report_yes_1_4": "Fusce sem est, maximus ac efficitur in, accumsan eu"
+                          " libero. Praesent facilisis, augue at pretium "
+                          "malesuada, ANSWER_YES and ANSWER_YES_CHOICE_1, "
+                          "ANSWER_YES_CHOICE_4 erat eros eleifend velit, at "
+                          "iaculis nunc nisi nec odio. Ut consequat ac metus a"
+                          " bibendum. Donec venenatis euismod eros ac "
+                          "dignissim. Donec dictum odio a augue tincidunt "
+                          "interdum.",
+        "report_yes_other": "Lorem ipsum dolor sit amet, consectetur "
+                            "adipiscing elit. Pellentesque sed scelerisque "
+                            "nulla, at mattis mauris. Vestibulum dignissim "
+                            "viverra nulla quis tempus. (Any other case)\n"
+                            "Donec finibus nisl sapien, sed auctor elit "
+                            "sodales ac. Nulla dictum ante ante, eget maximus "
+                            "mi efficitur nec.",
+    }
+
+    if answer_1 == answer_1_options[ANSWER_I_DONT_KNOW]:
+        report: str = all_reports["report_dont_know"]
+    elif answer_1 == answer_1_options[ANSWER_NO]:
+        report: str = all_reports["report_no"]
+    else:
+        if (
+            len(answers_yes) == 2
+            and answer_yes_options[ANSWER_YES_CHOICE_2] in answers_yes
+            and answer_yes_options[ANSWER_YES_CHOICE_3] in answers_yes
+        ):
+            report: str = all_reports["report_yes_2_3"]
+        elif (
+            len(answers_yes) == 2
+            and answer_yes_options[ANSWER_YES_CHOICE_1] in answers_yes
+            and answer_yes_options[ANSWER_YES_CHOICE_4] in answers_yes
+        ):
+            report: str = all_reports["report_yes_1_4"]
+        else:
+            report: str = all_reports["report_yes_other"]
+
+    return report
+
+
+a_4_dont_know = "I don't know"
+a_4_no = "No"
+a_4_yes = "Yes"
+a_4_yes_1 = "Gathering and processing data, developing solutions by yourself"
+a_4_yes_2 = "Email correspondence"
+a_4_yes_3 = "Live chat correspondence"
+a_4_yes_4 = "Phone calls"
+
+print(
+    f"report if ANSWER_I_DONT_KNOW:\n"
+    f"{question_4(answer_1=a_4_dont_know)}\n"
+)
+print(
+    f"report if ANSWER_NO:\n"
+    f"{question_4(answer_1=a_4_no)}\n"
+)
+print(
+    f"report if ANSWER_YES and choices 2 and 3 are indicated:\n"
+    f"{question_4(a_4_yes, a_4_yes_2, a_4_yes_3)}\n"
+)
+print(
+    f"report if ANSWER_YES and choices 1 and 4 are indicated:\n"
+    f"{question_4(a_4_yes, a_4_yes_1, a_4_yes_4)}\n"
+)
+print(
+    f"report if ANSWER_YES and any other combination is indicated:\n"
+    f"{question_4(a_4_yes, a_4_yes_1)}\n"
+)
+
+
+# # Define survey answers
+# survey = Survey(Q1_answer='something' ... other answers )
+#
+# # Generate report based on survey answers
+# report = Report(survey=survey)
+# report.generate() # Outputs report text which is generated based on survey answers
+
+
+# def generate_report(
+#         q1_answer,
+#         q3_time_period,
+#         q3_unit_of_time,
+#         q4_answer_1,
+#         *q2_answers,
+#         **q2_and_q4_answers
+# ) -> str:
+#     report: str = ""
+#
+#
+#
+#     return report
