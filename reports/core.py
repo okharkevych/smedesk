@@ -1,5 +1,5 @@
-from survey_and_report.report import Report
-from survey_and_report.survey import Survey
+from report import Report
+from survey import Survey
 
 
 # Define survey answers

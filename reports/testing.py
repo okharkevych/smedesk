@@ -2,8 +2,8 @@ import unittest
 
 from typing import Dict
 
-from survey_and_report.report import Report as r
-from survey_and_report.survey import Survey as s
+from report import Report as r
+from survey import Survey as s
 
 
 class TestQ1Report(unittest.TestCase):

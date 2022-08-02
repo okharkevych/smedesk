@@ -1,6 +1,6 @@
 from typing import Dict, List
 
-from survey_and_report.survey import Survey
+from survey import Survey
 
 
 class AnswerType:
