@@ -2,8 +2,8 @@ import unittest
 
 from typing import Dict
 
-from survey_and_report.survey_and_report import Report as r
-from survey_and_report.survey_and_report import Survey as s
+from survey_and_report.report import Report as r
+from survey_and_report.survey import Survey as s
 
 
 class TestQ1Report(unittest.TestCase):
@@ -316,8 +316,6 @@ class TestQ3Report(unittest.TestCase):
             },
         }
 
-
-
     def test_q3_report_if_time_period_more_than_240_minutes(self):
         survey = s(
             q3_time_period=241,
@@ -352,15 +350,15 @@ class TestQ3Report(unittest.TestCase):
         self.assertEqual(expected_result, actual_result)
 
     def test_q3_report_if_time_period_less_than_2_hours(self):
-            survey = s(
-                q3_time_period=1,
-                q3_unit_of_time="hours"
-            )
+        survey = s(
+            q3_time_period=1,
+            q3_unit_of_time="hours"
+        )
 
-            expected_result: str = self.report_options["hours"]["report_1"]
-            actual_result: str = r(survey).q3_report()
+        expected_result: str = self.report_options["hours"]["report_1"]
+        actual_result: str = r(survey).q3_report()
 
-            self.assertEqual(expected_result, actual_result)
+        self.assertEqual(expected_result, actual_result)
 
     def test_q3_report_in_any_other_case_if_minutes_are_chosen(self):
         survey = s(
