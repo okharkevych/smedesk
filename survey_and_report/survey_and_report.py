@@ -1,4 +1,4 @@
-from typing import Dict, List, Union
+from typing import Dict, List
 
 
 class Survey:
@@ -10,7 +10,7 @@ class Survey:
 
     def __init__(
             self,
-            q1_answer: str,
+            q1_answer: str = None,
             q2_answer_1: str = None,
             q2_answer_2: str = None,
             q2_answer_3: str = None,
@@ -18,7 +18,11 @@ class Survey:
             q3_time_period: int = None,
             q3_unit_of_time: str = None,
             q4_yes_no_answer: str = None,
-            **q4_yes_options: str
+            q4_yes_option_1: str = None,
+            q4_yes_option_2: str = None,
+            q4_yes_option_3: str = None,
+            q4_yes_option_4: str = None
+
     ):
         self.q1_answer = q1_answer
         self.q2_answer_1 = q2_answer_1
@@ -28,8 +32,10 @@ class Survey:
         self.q3_time_period = q3_time_period
         self.q3_unit_of_time = q3_unit_of_time
         self.q4_yes_no_answer = q4_yes_no_answer
-
-        self.__dict__.update(q4_yes_options)
+        self.q4_yes_option_1 = q4_yes_option_1
+        self.q4_yes_option_2 = q4_yes_option_2
+        self.q4_yes_option_3 = q4_yes_option_3
+        self.q4_yes_option_4 = q4_yes_option_4
 
 
 class AnswerType:
@@ -49,17 +55,21 @@ class AnswerType:
     ANSWER_YES_CHOICE_4: int = 11
 
 
-class ReportOptions:
+class Report(AnswerType):
 
-    q1: Dict[str, Dict[Union[int, str], str]] = {
-        "answer_options": {
-            AnswerType.ANSWER_1: "Customer Support",
-            AnswerType.ANSWER_2: "Engineering and technical fields",
-            AnswerType.ANSWER_3: "Pharmaceutical and biotechnology areas",
-            AnswerType.ANSWER_4: "Scientific and academic fields",
-            AnswerType.ANSWER_5: "Electronic discovery",
-        },
-        "reports": {
+    def __init__(self, survey: Survey):
+        self.survey = survey
+
+    def q1_report(self) -> str:
+        answer_options: Dict[int, str] = {
+            self.ANSWER_1: "Customer Support",
+            self.ANSWER_2: "Engineering and technical fields",
+            self.ANSWER_3: "Pharmaceutical and biotechnology areas",
+            self.ANSWER_4: "Scientific and academic fields",
+            self.ANSWER_5: "Electronic discovery",
+        }
+
+        report_options: Dict[str, str] = {
             "report_1": (
                 "Lorem ipsum 1. Question - ANSWER_1 dolor sit amet, "
                 "consectetur adipiscing elit. Mauris sed ligula vitae tellus "
@@ -105,19 +115,29 @@ class ReportOptions:
                 "Nullam auctor odio vehicula, posuere elit in, ullamcorper "
                 "lectus. Mauris pharetra dapibus congue. Suspendisse potenti."
             ),
-        },
-    }
+        }
 
-    q2: Dict[str, Dict[Union[int, str], str]] = {
-        "answer_options": {
-            AnswerType.ANSWER_1: (
+        answer_reports: Dict[str, str] = {
+            answer_options[self.ANSWER_1]: report_options["report_1"],
+            answer_options[self.ANSWER_2]: report_options["report_2"],
+            answer_options[self.ANSWER_3]: report_options["report_3"],
+            answer_options[self.ANSWER_4]: report_options["report_4"],
+            answer_options[self.ANSWER_5]: report_options["report_4"],
+        }
+
+        return answer_reports[self.survey.q1_answer]
+
+    def q2_report(self) -> str:
+        answer_options: Dict[int, str] = {
+            self.ANSWER_1: (
                 "Creating, reading, updating and deleting database entries"
             ),
-            AnswerType.ANSWER_2: "Computations",
-            AnswerType.ANSWER_3: "Text-based data processing",
-            AnswerType.ANSWER_4: "Retrieving data from third-party sources",
-        },
-        "reports": {
+            self.ANSWER_2: "Computations",
+            self.ANSWER_3: "Text-based data processing",
+            self.ANSWER_4: "Retrieving data from third-party sources",
+        }
+
+        report_options: Dict[str, str] = {
             "report_1": (
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed "
                 "sollicitudin leo in 2. Question - ANSWER_4, ANSWER_3 and "
@@ -169,86 +189,27 @@ class ReportOptions:
                 "proident, sunt in culpa qui officia deserunt mollit anim id "
                 "est laborum."
             ),
-        },
-    }
-
-    q3: Dict[str, str] = {
-        "report_1": (
-            f"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
-            f"Calories: ..... Vivamus hendrerit arcu eros, nec bibendum mi sodales id. Ut auctor nisl a placerat porttitor. Duis at tortor posuere, gravida sapien in, fermentum ligula.\n\nQuisque eu ipsum lobortis, hendrerit justo vitae, varius nisi. Etiam in leo feugiat purus facilisis tempor. Fusce congue metus non massa mollis, id imperdiet ex viverra. Cras Calories: ..... imperdiet lectus at imperdiet ornare."
-        ),
-        "report_2": (
-            f"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta at odio ac rhoncus. Calories: ..... Integer viverra porta eros nec ultrices. Nullam ante sem, tincidunt vitae orci id, vestibulum auctor risus. Phasellus sit amet lobortis eros. Maecenas convallis dolor ex, vel congue ipsum ornare eu.\n\nNunc in mattis dolor, quis posuere lorem. Calories: ..... Nullam condimentum semper diam, lacinia tempor eros tristique ut. Etiam ultrices imperdiet tortor at eleifend. Aenean lorem felis, volutpat eu euismod at, congue id erat. Duis luctus quam vitae mattis tempus."
-        ),
-        "report_3": (
-            f"Sed at aliquam ex. Vestibulum maximus erat in justo maximus posuere. Calories: ..... Suspendisse tellus magna, faucibus scelerisque dapibus et, luctus egestas nibh. Pellentesque eleifend mauris ac volutpat ullamcorper.\n\nAenean vitae velit et nulla egestas viverra sit amet eu eros. Calories: ..... Nunc congue rutrum sem"
-        ),
-    }
-
-
-class Report:
-
-    def __init__(self, survey: Survey):
-        self.survey = survey
-
-    def q1_report(self) -> str:
-        answer_reports: Dict[str, str] = {
-            ReportOptions.q1["answer_options"][AnswerType.ANSWER_1]: (
-                ReportOptions.q1["reports"]["report_1"]
-            ),
-            ReportOptions.q1["answer_options"][AnswerType.ANSWER_2]: (
-                ReportOptions.q1["reports"]["report_2"]
-            ),
-            ReportOptions.q1["answer_options"][AnswerType.ANSWER_3]: (
-                ReportOptions.q1["reports"]["report_3"]
-            ),
-            ReportOptions.q1["answer_options"][AnswerType.ANSWER_4]: (
-                ReportOptions.q1["reports"]["report_4"]
-            ),
-            ReportOptions.q1["answer_options"][AnswerType.ANSWER_5]: (
-                ReportOptions.q1["reports"]["report_4"]
-            ),
         }
 
-        return answer_reports[self.survey.q1_answer]
-
-    def q2_report(self) -> str:
         if (
                 not self.survey.q2_answer_2
-                and (
-                self.survey.q2_answer_1
-                == ReportOptions.q2["answer_options"][AnswerType.ANSWER_1]
-                )
-                and (
-                self.survey.q2_answer_3
-                == ReportOptions.q2["answer_options"][AnswerType.ANSWER_3]
-                )
-                and (
-                self.survey.q2_answer_4
-                == ReportOptions.q2["answer_options"][AnswerType.ANSWER_4]
-                )
+                and self.survey.q2_answer_1 == answer_options[self.ANSWER_1]
+                and self.survey.q2_answer_3 == answer_options[self.ANSWER_3]
+                and self.survey.q2_answer_4 == answer_options[self.ANSWER_4]
         ):
-            report: str = ReportOptions.q2["reports"]["report_1"]
+            report: str = report_options["report_1"]
         elif (
                 not any([self.survey.q2_answer_1, self.survey.q2_answer_3])
-                and (
-                self.survey.q2_answer_2
-                == ReportOptions.q2["answer_options"][AnswerType.ANSWER_2]
-                )
-                and (
-                self.survey.q2_answer_4
-                == ReportOptions.q2["answer_options"][AnswerType.ANSWER_4]
-                )
+                and self.survey.q2_answer_2 == answer_options[self.ANSWER_2]
+                and self.survey.q2_answer_4 == answer_options[self.ANSWER_4]
         ):
-            report: str = ReportOptions.q2["reports"]["report_2"]
+            report: str = report_options["report_2"]
         elif (
                 not self.survey.q2_answer_2
                 and (
                         (
                             self.survey.q2_answer_1
-                            == ReportOptions.q2["answer_options"][
-                                AnswerType.ANSWER_1
-                            ]
+                            == answer_options[self.ANSWER_1]
                             and not any([
                                 self.survey.q2_answer_3,
                                 self.survey.q2_answer_4
@@ -257,9 +218,7 @@ class Report:
                         or (
                                 (
                                     self.survey.q2_answer_3
-                                    == ReportOptions.q2["answer_options"][
-                                        AnswerType.ANSWER_3
-                                    ]
+                                    == answer_options[self.ANSWER_3]
                                     and not any([
                                         self.survey.q2_answer_1,
                                         self.survey.q2_answer_4
@@ -269,9 +228,7 @@ class Report:
                         or (
                                 (
                                     self.survey.q2_answer_4
-                                    == ReportOptions.q2["answer_options"][
-                                        AnswerType.ANSWER_4
-                                    ]
+                                    == answer_options[self.ANSWER_4]
                                     and not any([
                                         self.survey.q2_answer_1,
                                         self.survey.q2_answer_3
@@ -280,236 +237,235 @@ class Report:
                         )
                 )
         ):
-            report: str = ReportOptions.q2["reports"]["report_3"]
+            report: str = report_options["report_3"]
         else:
-            report: str = ReportOptions.q2["reports"]["report_4"]
+            report: str = report_options["report_4"]
 
         return report
 
     def q3_report(self) -> str:
-        pass
+        report_options: Dict[str, str] = {
+            "report_1": (
+                f"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+                f"Recommended shift duration: "
+                f"{round(self.survey.q3_time_period * 1.5, 1)} "
+                f"{self.survey.q3_unit_of_time} Vivamus hendrerit arcu eros, "
+                f"nec bibendum mi sodales id. Ut auctor nisl a placerat "
+                f"porttitor. Duis at tortor posuere, gravida sapien in, "
+                f"fermentum ligula.\n\nQuisque eu ipsum lobortis, hendrerit "
+                f"justo vitae, varius nisi. Etiam in leo feugiat purus "
+                f"facilisis tempor. Fusce congue metus non massa mollis, id "
+                f"imperdiet ex viverra. Cras Recommended shift duration: "
+                f"{round(self.survey.q3_time_period * 1.5, 1)} "
+                f"{self.survey.q3_unit_of_time} imperdiet lectus at imperdiet "
+                f"ornare."
+            ),
+            "report_2": (
+                f"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+                f"Integer porta at odio ac rhoncus. Recommended shift "
+                f"duration: {round(self.survey.q3_time_period * 1.5 * 3.5, 1)}"
+                f" {self.survey.q3_unit_of_time} Integer viverra porta eros "
+                f"nec ultrices. Nullam ante sem, tincidunt vitae orci id, "
+                f"vestibulum auctor risus. Phasellus sit amet lobortis eros. "
+                f"Maecenas convallis dolor ex, vel congue ipsum ornare eu.\n\n"
+                f"Nunc in mattis dolor, quis posuere lorem. Recommended shift "
+                f"duration: {round(self.survey.q3_time_period * 1.5 * 3.5, 1)}"
+                f" {self.survey.q3_unit_of_time} Nullam condimentum semper "
+                f"diam, lacinia tempor eros tristique ut. Etiam ultrices "
+                f"imperdiet tortor at eleifend. Aenean lorem felis, volutpat "
+                f"eu euismod at, congue id erat. Duis luctus quam vitae mattis"
+                f" tempus."
+            ),
+            "report_3": (
+                f"Sed at aliquam ex. Vestibulum maximus erat in justo maximus "
+                f"posuere. Recommended shift duration: "
+                f"{round(self.survey.q3_time_period * 1.5 * 2.67, 1)} "
+                f"{self.survey.q3_unit_of_time} Suspendisse tellus magna, "
+                f"faucibus scelerisque dapibus et, luctus egestas nibh. "
+                f"Pellentesque eleifend mauris ac volutpat ullamcorper.\n\n"
+                f"Aenean vitae velit et nulla egestas viverra sit amet eu "
+                f"eros. Recommended shift duration: "
+                f"{round(self.survey.q3_time_period * 1.5 * 2.67, 1)} "
+                f"{self.survey.q3_unit_of_time} Nunc congue rutrum sem"
+            ),
+        }
+
+        if (
+                (
+                        self.survey.q3_time_period > 240
+                        and self.survey.q3_unit_of_time == "minutes"
+                )
+                or (
+                self.survey.q3_time_period > 4
+                and self.survey.q3_unit_of_time == "hours"
+                )
+        ):
+            report: str = report_options["report_1"]
+        elif (
+                (
+                        self.survey.q3_time_period < 120
+                        and self.survey.q3_unit_of_time == "minutes"
+                )
+                or (
+                        self.survey.q3_time_period < 2
+                        and self.survey.q3_unit_of_time == "hours"
+                )
+        ):
+            report: str = report_options["report_2"]
+        else:
+            report: str = report_options["report_3"]
+
+        return report
 
     def q4_report(self) -> str:
-        pass
+        answer_1_options: Dict[int, str] = {
+            self.ANSWER_YES: "Yes",
+            self.ANSWER_NO: "No",
+            self.ANSWER_I_DONT_KNOW: "I don't know",
+        }
+
+        answer_yes_options: Dict[int, str] = {
+            self.ANSWER_YES_CHOICE_1: (
+                "Gathering and processing data, "
+                "developing solutions by yourself"
+            ),
+            self.ANSWER_YES_CHOICE_2: "Email correspondence",
+            self.ANSWER_YES_CHOICE_3: "Live chat correspondence",
+            self.ANSWER_YES_CHOICE_4: "Phone calls",
+        }
+
+        report_options: Dict[str, str] = {
+            "report_dont_know": (
+                "Phasellus ac sem ornare, ANSWER_I_DONT_KNOW "
+                "euismod tellus id, sagittis felis. Nullam "
+                "viverra est nibh, et dignissim elit tincidunt"
+                " nec. Integer vel dolor aliquam, eleifend "
+                "metus in, tincidunt erat. Nam id facilisis "
+                "tortor.\n\nDonec malesuada, libero nec "
+                "tincidunt ANSWER_I_DONT_KNOW commodo, nulla "
+                "velit imperdiet mauris, sit amet cursus dui "
+                "quam maximus justo. In accumsan nisi ut orci "
+                "finibus ullamcorper. Aliquam consequat risus "
+                "non orci dapibus, id commodo erat egestas."
+            ),
+            "report_no": (
+                "Nam maximus et massa laoreet congue. In facilisis "
+                "egestas neque. Nullam ac euismod nibh. ANSWER_NO "
+                "Aenean pulvinar lacinia ligula, nec lobortis magna "
+                "accumsan sed.\n\nDuis tempor pellentesque quam. "
+                "ANSWER_NO Sed non est dui. Sed commodo odio vel "
+                "augue pellentesque, et sagittis dolor tristique. "
+                "Phasellus mollis magna eu egestas viverra. Cras "
+                "elementum erat vel libero venenatis, ut suscipit "
+                "nibh scelerisque."
+            ),
+            "report_yes_2_3": (
+                "Mauris viverra lobortis ante, eget faucibus "
+                "felis pulvinar et. Suspendisse urna diam, "
+                "ANSWER_YES and ANSWER_YES_CHOICE_2, "
+                "ANSWER_YES_CHOICE_3 elementum nec tincidunt "
+                "ornare, convallis condimentum nisi.\n\nNam "
+                "gravida ac magna eget cursus. ANSWER_YES and "
+                "ANSWER_YES_CHOICE_2, ANSWER_YES_CHOICE_3 "
+                "Maecenas fermentum lacus eu tempor condimentum."
+                " Quisque tristique viverra justo, et mollis "
+                "magna ornare a. In lacus elit, vestibulum a ex "
+                "facilisis, faucibus gravida dui. Morbi "
+                "consectetur egestas tempor. Sed neque ex, "
+                "condimentum congue facilisis non, aliquet sed "
+                "odio."
+            ),
+            "report_yes_1_4": (
+                "Fusce sem est, maximus ac efficitur in, "
+                "accumsan eu libero. Praesent facilisis, augue "
+                "at pretium malesuada, ANSWER_YES and "
+                "ANSWER_YES_CHOICE_1, ANSWER_YES_CHOICE_4 erat "
+                "eros eleifend velit, at iaculis nunc nisi nec "
+                "odio. Ut consequat ac metus a bibendum. Donec "
+                "venenatis euismod eros ac dignissim. Donec "
+                "dictum odio a augue tincidunt interdum."
+            ),
+            "report_yes_other": (
+                "Lorem ipsum dolor sit amet, consectetur "
+                "adipiscing elit. Pellentesque sed scelerisque"
+                " nulla, at mattis mauris. Vestibulum "
+                "dignissim viverra nulla quis tempus. "
+                "(Any other case)\nDonec finibus nisl sapien, "
+                "sed auctor elit sodales ac. Nulla dictum ante"
+                " ante, eget maximus mi efficitur nec."
+            ),
+        }
+
+        if (
+                self.survey.q4_yes_no_answer
+                == answer_1_options[self.ANSWER_I_DONT_KNOW]
+        ):
+            report: str = report_options["report_dont_know"]
+        elif self.survey.q4_yes_no_answer == answer_1_options[self.ANSWER_NO]:
+            report: str = report_options["report_no"]
+        else:
+            if (
+                not any(
+                    [self.survey.q4_yes_option_1, self.survey.q4_yes_option_4]
+                )
+                and (
+                    self.survey.q4_yes_option_2
+                    == answer_yes_options[self.ANSWER_YES_CHOICE_2]
+                )
+                and (
+                    self.survey.q4_yes_option_3
+                    == answer_yes_options[self.ANSWER_YES_CHOICE_3]
+                )
+            ):
+                report: str = report_options["report_yes_2_3"]
+            elif (
+                not any(
+                    [self.survey.q4_yes_option_2, self.survey.q4_yes_option_3]
+                )
+                and (
+                    self.survey.q4_yes_option_1
+                    == answer_yes_options[self.ANSWER_YES_CHOICE_1]
+                )
+                and (
+                    self.survey.q4_yes_option_4
+                    == answer_yes_options[self.ANSWER_YES_CHOICE_4]
+                )
+            ):
+                report: str = report_options["report_yes_1_4"]
+            else:
+                report: str = report_options["report_yes_other"]
+
+        return report
 
     def generate(self) -> str:
-        pass
+        report: str = ""
+
+        q1_report: str = self.q1_report()
+        q2_report: str = self.q2_report()
+        q3_report: str = self.q3_report()
+        q4_report: str = self.q4_report()
+
+        report_list: List[str] = [q1_report, q2_report, q3_report, q4_report]
+
+        for report_part in report_list:
+            report += f"{report_part}\n\n"
+
+        return report
 
 
-survey_1 = Survey(
+# Define survey answers
+survey = Survey(
     q1_answer="Customer Support",
-    q2_answer_1="Creating, reading, updating and deleting database entries",
-    # q2_answer_2="Computations",
+    q2_answer_1=(
+            "Creating, reading, updating and deleting database entries"
+        ),
     q2_answer_3="Text-based data processing",
     q2_answer_4="Retrieving data from third-party sources",
-    q3_time_period=0,
-    q3_unit_of_time="",
-    q4_yes_no_answer="",
-    # q4_yes_options="",
+    q3_time_period=241,
+    q3_unit_of_time="minutes",
+    q4_yes_no_answer="I don't know"
 )
 
-report_1 = Report(survey=survey_1)
-
-assert report_1.q1_report() == ReportOptions().q1["reports"]["report_1"]
-assert report_1.q2_report() == ReportOptions().q2["reports"]["report_1"]
-breakpoint()
-
-
-def question_3(time_period: int, unit_of_time: str) -> str:
-    all_reports: Dict[str, str] = {
-        "report_1": f"Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                    f" Recommended shift duration: "
-                    f"{round(time_period * 1.5, 1)} {unit_of_time} Vivamus "
-                    f"hendrerit "
-                    f"arcu eros, nec bibendum mi sodales id. Ut auctor nisl a "
-                    f"placerat porttitor. Duis at tortor posuere, gravida "
-                    f"sapien in, fermentum ligula.\n\nQuisque eu ipsum "
-                    f"lobortis, hendrerit justo vitae, varius nisi. Etiam in "
-                    f"leo feugiat purus facilisis tempor. Fusce congue metus "
-                    f"non massa mollis, id imperdiet ex viverra. Cras "
-                    f"Recommended shift duration: "
-                    f"{round(time_period * 1.5, 1)} {unit_of_time} imperdiet "
-                    f"lectus at "
-                    f"imperdiet ornare.",
-        "report_2": f"Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                    f" Integer porta at odio ac rhoncus. "
-                    f"Recommended shift duration: "
-                    f"{round(time_period * 1.5 * 3.5, 1)} {unit_of_time} "
-                    f"Integer viverra porta "
-                    f"eros nec ultrices. Nullam ante sem, tincidunt vitae orci"
-                    f" id, vestibulum auctor risus. Phasellus sit amet "
-                    f"lobortis eros. Maecenas convallis dolor ex, vel congue "
-                    f"ipsum ornare eu.\n\nNunc in mattis dolor, quis posuere "
-                    f"lorem. Recommended shift duration: "
-                    f"{round(time_period * 1.5 * 3.5, 1)} {unit_of_time} "
-                    f"Nullam "
-                    f"condimentum semper diam, lacinia tempor eros tristique "
-                    f"ut. Etiam ultrices imperdiet tortor at eleifend. Aenean "
-                    f"lorem felis, volutpat eu euismod at, congue id erat. "
-                    f"Duis luctus quam vitae mattis tempus.",
-        "report_3": f"Sed at aliquam ex. Vestibulum maximus erat in justo "
-                    f"maximus posuere. Recommended shift duration: "
-                    f"{round(time_period * 1.5 * 2.67, 1)} {unit_of_time} "
-                    f"Suspendisse tellus magna, faucibus scelerisque dapibus "
-                    f"et, luctus egestas nibh. Pellentesque eleifend mauris ac"
-                    f" volutpat ullamcorper.\n\nAenean vitae velit et nulla "
-                    f"egestas viverra sit amet eu eros. "
-                    f"Recommended shift duration: "
-                    f"{round(time_period * 1.5 * 2.67, 1)} {unit_of_time} Nunc"
-                    f" congue rutrum sem"
-    }
-
-    if (
-            (time_period > 240 and unit_of_time == "minutes")
-            or (time_period > 4 and unit_of_time == "hours")
-    ):
-        report: str = all_reports["report_1"]
-    elif (
-            (time_period < 120 and unit_of_time == "minutes")
-            or (time_period < 2 and unit_of_time == "hours")
-    ):
-        report: str = all_reports["report_2"]
-    else:
-        report: str = all_reports["report_3"]
-
-    return report
-
-
-def question_4(answer_1: str, **answers_yes: str) -> str:
-    answer_1_options: Dict[int, str] = {
-        ANSWER_YES: "Yes",
-        ANSWER_NO: "No",
-        ANSWER_I_DONT_KNOW: "I don't know",
-    }
-
-    answer_yes_options: Dict[int, str] = {
-        ANSWER_YES_CHOICE_1: (
-            "Gathering and processing data, developing solutions by yourself"
-        ),
-        ANSWER_YES_CHOICE_2: "Email correspondence",
-        ANSWER_YES_CHOICE_3: "Live chat correspondence",
-        ANSWER_YES_CHOICE_4: "Phone calls",
-    }
-
-    all_reports: Dict[str, str] = {
-        "report_dont_know": "Phasellus ac sem ornare, ANSWER_I_DONT_KNOW "
-                            "euismod tellus id, sagittis felis. Nullam viverra"
-                            " est nibh, et dignissim elit tincidunt nec. "
-                            "Integer vel dolor aliquam, eleifend metus in, "
-                            "tincidunt erat. Nam id facilisis tortor.\n\nDonec"
-                            " malesuada, libero nec tincidunt "
-                            "ANSWER_I_DONT_KNOW commodo, nulla velit imperdiet"
-                            " mauris, sit amet cursus dui quam maximus justo. "
-                            "In accumsan nisi ut orci finibus ullamcorper. "
-                            "Aliquam consequat risus non orci dapibus, id "
-                            "commodo erat egestas.",
-        "report_no": "Nam maximus et massa laoreet congue. In facilisis "
-                     "egestas neque. Nullam ac euismod nibh. ANSWER_NO Aenean "
-                     "pulvinar lacinia ligula, nec lobortis magna accumsan "
-                     "sed.\n\nDuis tempor pellentesque quam. ANSWER_NO Sed non"
-                     " est dui. Sed commodo odio vel augue pellentesque, et "
-                     "sagittis dolor tristique. Phasellus mollis magna eu "
-                     "egestas viverra. Cras elementum erat vel libero "
-                     "venenatis, ut suscipit nibh scelerisque.",
-        "report_yes_2_3": "Mauris viverra lobortis ante, eget faucibus felis "
-                          "pulvinar et. Suspendisse urna diam, ANSWER_YES and "
-                          "ANSWER_YES_CHOICE_2, ANSWER_YES_CHOICE_3 elementum "
-                          "nec tincidunt ornare, convallis condimentum nisi."
-                          "\n\nNam gravida ac magna eget cursus. ANSWER_YES "
-                          "and ANSWER_YES_CHOICE_2, ANSWER_YES_CHOICE_3 "
-                          "Maecenas fermentum lacus eu tempor condimentum. "
-                          "Quisque tristique viverra justo, et mollis magna "
-                          "ornare a. In lacus elit, vestibulum a ex facilisis,"
-                          " faucibus gravida dui. Morbi consectetur egestas "
-                          "tempor. Sed neque ex, condimentum congue facilisis "
-                          "non, aliquet sed odio.",
-        "report_yes_1_4": "Fusce sem est, maximus ac efficitur in, accumsan eu"
-                          " libero. Praesent facilisis, augue at pretium "
-                          "malesuada, ANSWER_YES and ANSWER_YES_CHOICE_1, "
-                          "ANSWER_YES_CHOICE_4 erat eros eleifend velit, at "
-                          "iaculis nunc nisi nec odio. Ut consequat ac metus a"
-                          " bibendum. Donec venenatis euismod eros ac "
-                          "dignissim. Donec dictum odio a augue tincidunt "
-                          "interdum.",
-        "report_yes_other": "Lorem ipsum dolor sit amet, consectetur "
-                            "adipiscing elit. Pellentesque sed scelerisque "
-                            "nulla, at mattis mauris. Vestibulum dignissim "
-                            "viverra nulla quis tempus. (Any other case)\n"
-                            "Donec finibus nisl sapien, sed auctor elit "
-                            "sodales ac. Nulla dictum ante ante, eget maximus "
-                            "mi efficitur nec.",
-    }
-
-    if answer_1 == answer_1_options[ANSWER_I_DONT_KNOW]:
-        report: str = all_reports["report_dont_know"]
-    elif answer_1 == answer_1_options[ANSWER_NO]:
-        report: str = all_reports["report_no"]
-    else:
-        if (
-            len(answers_yes) == 2
-            and answer_yes_options[ANSWER_YES_CHOICE_2] in answers_yes.values()
-            and answer_yes_options[ANSWER_YES_CHOICE_3] in answers_yes.values()
-        ):
-            report: str = all_reports["report_yes_2_3"]
-        elif (
-            len(answers_yes) == 2
-            and answer_yes_options[ANSWER_YES_CHOICE_1] in answers_yes.values()
-            and answer_yes_options[ANSWER_YES_CHOICE_4] in answers_yes.values()
-        ):
-            report: str = all_reports["report_yes_1_4"]
-        else:
-            report: str = all_reports["report_yes_other"]
-
-    return report
-
-
-# # Define survey answers
-# survey = Survey(Q1_answer='something' ... other answers )
-#
-# # Generate report based on survey answers
-# report = Report(survey=survey)
-# report.generate() # Outputs report text which is generated based on survey answers
-
-
-def generate_report(
-        q1_answer: str = None,
-        q2_answer_1: str = None,
-        q2_answer_2: str = None,
-        q2_answer_3: str = None,
-        q2_answer_4: str = None,
-        q3_time_period: int = None,
-        q3_unit_of_time: str = None,
-        q4_answer_1: str = None,
-        **q4_answers_yes: str
-
-) -> str:
-    report: str = ""
-
-    q1_report: str = question_1(q1_answer)
-    q2_report: str = question_2(
-        q2_answer_1, q2_answer_2, q2_answer_3, q2_answer_4
-    )
-    q3_report: str = question_3(q3_time_period, q3_unit_of_time)
-    q4_report: str = question_4(q4_answer_1, **q4_answers_yes)
-
-    report_list: List[str] = [q1_report, q2_report, q3_report, q4_report]
-
-    for report_part in report_list:
-        report += f"{report_part}\n=====\n"
-
-    return report
-
-
-print(
-    generate_report(
-        q1_answer=a_1_1,
-        q2_answer_1=a_2_1,
-        q2_answer_3=a_2_3,
-        q2_answer_4=a_2_4,
-        q3_time_period=a_3_241_m,
-        q3_unit_of_time=a_3_minutes,
-        q4_answer_1=a_4_yes,
-        q4_answer_yes_2=a_4_yes_2,
-        q4_answer_yes_3=a_4_yes_3
-    )
-)
+# Generate report based on survey answers
+report = Report(survey=survey)
+report.generate()  # Outputs report text generated based on survey answers
