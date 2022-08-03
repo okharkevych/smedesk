@@ -393,13 +393,13 @@ class TestQ4Report(unittest.TestCase):
         }
 
         self.answer_yes_options: Dict[int, str] = {
-            r.ANSWER_YES_CHOICE_1: (
+            r.ANSWER_1: (
                 "Gathering and processing data, "
                 "developing solutions by yourself"
             ),
-            r.ANSWER_YES_CHOICE_2: "Email correspondence",
-            r.ANSWER_YES_CHOICE_3: "Live chat correspondence",
-            r.ANSWER_YES_CHOICE_4: "Phone calls",
+            r.ANSWER_2: "Email correspondence",
+            r.ANSWER_3: "Live chat correspondence",
+            r.ANSWER_4: "Phone calls",
         }
 
         self.report_options: Dict[str, str] = {
@@ -477,8 +477,8 @@ class TestQ4Report(unittest.TestCase):
     def test_q4_report_if_yes_and_options_2_and_3_are_chosen(self):
         survey = s(
             q4_yes_no_answer=self.answer_1_options[r.ANSWER_YES],
-            q4_yes_option_2=self.answer_yes_options[r.ANSWER_YES_CHOICE_2],
-            q4_yes_option_3=self.answer_yes_options[r.ANSWER_YES_CHOICE_3]
+            q4_yes_option_2=self.answer_yes_options[r.ANSWER_2],
+            q4_yes_option_3=self.answer_yes_options[r.ANSWER_3]
         )
 
         expected_result: str = self.report_options["report_yes_2_3"]
@@ -489,8 +489,8 @@ class TestQ4Report(unittest.TestCase):
     def test_q4_report_if_yes_and_options_1_and_4_are_chosen(self):
         survey = s(
             q4_yes_no_answer=self.answer_1_options[r.ANSWER_YES],
-            q4_yes_option_1=self.answer_yes_options[r.ANSWER_YES_CHOICE_1],
-            q4_yes_option_4=self.answer_yes_options[r.ANSWER_YES_CHOICE_4]
+            q4_yes_option_1=self.answer_yes_options[r.ANSWER_1],
+            q4_yes_option_4=self.answer_yes_options[r.ANSWER_4]
         )
 
         expected_result: str = self.report_options["report_yes_1_4"]
@@ -501,7 +501,7 @@ class TestQ4Report(unittest.TestCase):
     def test_q4_report_if_any_other_combination_is_chosen(self):
         survey = s(
             q4_yes_no_answer=self.answer_1_options[r.ANSWER_YES],
-            q4_yes_option_2=self.answer_yes_options[r.ANSWER_YES_CHOICE_2]
+            q4_yes_option_2=self.answer_yes_options[r.ANSWER_2]
         )
 
         expected_result: str = self.report_options["report_yes_other"]
