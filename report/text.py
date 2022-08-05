@@ -12,7 +12,7 @@ class Text:
         "eget auctor lectus, mollis blandit ipsum. Phasellus maximus "
         "finibus arcu a tincidunt."
     )
-    ENGINEERING_AND_TECHNICAL: str = (
+    ENGINEERING_AND_TECH: str = (
         "Lorem ipsum 1. Question - ANSWER_2 dolor sit amet, "
         "consectetur adipiscing elit. Ut et augue id leo egestas "
         "interdum in eu lectus. Aliquam vel finibus nisi. Vestibulum "
@@ -22,7 +22,7 @@ class Text:
         " Sed laoreet tellus non felis rutrum, in hendrerit ipsum "
         "porta. Sed quis sem velit."
     )
-    PHARMACEUTICAL_AND_BIOTECHNOLOGY: str = (
+    PHARM_AND_BIO: str = (
         "Sed vel bibendum tortor. Proin a aliquet tortor. Vivamus "
         "rhoncus 1. Question - ANSWER_3 risus nec ultricies rutrum. "
         "Mauris bibendum lectus risus, non porttitor urna interdum "
@@ -34,7 +34,7 @@ class Text:
         "Cras nisi sem, euismod in egestas vel, ullamcorper ac sapien."
         " In porttitor elementum faucibus."
     )
-    SCIENTIFIC_AND_ACADEMIC_OR_ELECTRONIC_DISCOVERY: str = (
+    SCIENCE_OR_LAW: str = (
         "Mauris urna nunc, eleifend id sapien eget, tincidunt "
         "venenatis risus. Vestibulum imperdiet enim at nibh sodales, "
         "1. Question - ANSWER_4 or ANSWER_5 or ANSWER_6 eget "
@@ -45,7 +45,7 @@ class Text:
         "lectus. Mauris pharetra dapibus congue. Suspendisse potenti."
     )
 
-    GET_THIRD_PARTY_DATA_AND_PROCESS_TEXT_DATA_AND_CRUD: str = (
+    GET_DATA_PROCESS_TEXT_AND_CRUD: str = (
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed "
         "sollicitudin leo in 2. Question - ANSWER_4, ANSWER_3 and "
         "ANSWER_1 lectus cursus tincidunt. Nullam dapibus tincidunt "
@@ -62,7 +62,7 @@ class Text:
         "Aenean nec tortor a ligula aliquam pharetra. Aenean et magna "
         "enim."
     )
-    COMPUTATIONS_AND_GET_THIRD_PARTY_DATA: str = (
+    COMPUTATIONS_AND_GET_DATA: str = (
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
         "Vestibulum dictum, dui non auctor tristique, odio sem 2. "
         "Question - ANSWER_2 and ANSWER_4 convallis lacus, non gravida"
@@ -73,7 +73,7 @@ class Text:
         "pulvinar. Vivamus sit amet sagittis risus. Morbi ut "
         "pellentesque sapien."
     )
-    GET_THIRD_PARTY_DATA_OR_PROCESS_TEXT_DATA_OR_CRUD: str = (
+    GET_DATA_OR_PROCESS_TEXT_OR_CRUD: str = (
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras"
         " viverra luctus nunc, non ultrices mauris molestie vitae. Sed"
         " gravida purus finibus 2. Question - ANSWER_4, ANSWER_3 or "
@@ -137,7 +137,7 @@ class Text:
         "condimentum congue facilisis non, aliquet sed "
         "odio."
     )
-    YES_AND_SOLO_DATA_PROCESSING_AND_PHONE_CALLS: str = (
+    YES_AND_SOLO_WORK_AND_PHONE_CALLS: str = (
         "Fusce sem est, maximus ac efficitur in, "
         "accumsan eu libero. Praesent facilisis, augue "
         "at pretium malesuada, ANSWER_YES and "
@@ -158,7 +158,7 @@ class Text:
     )
 
     @staticmethod
-    def time_more_than_240_minutes(time_period, unit_of_time):
+    def time_more_than_240_minutes(time_period, unit_of_time) -> str:
         return (
             f"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
             f"Recommended shift duration: {round(time_period * 1.5, 1)} "
@@ -174,7 +174,7 @@ class Text:
         )
 
     @staticmethod
-    def time_less_than_120_minutes(time_period, unit_of_time):
+    def time_less_than_120_minutes(time_period, unit_of_time) -> str:
         return (
             f"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
             f"Integer porta at odio ac rhoncus. Recommended shift "
@@ -192,7 +192,7 @@ class Text:
         )
 
     @staticmethod
-    def other_time_frames(time_period, unit_of_time):
+    def other_time_frames(time_period, unit_of_time) -> str:
         return (
             f"Sed at aliquam ex. Vestibulum maximus erat in justo maximus "
             f"posuere. Recommended shift duration: "

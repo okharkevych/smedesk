@@ -9,7 +9,7 @@ class Survey:
         self.TASK_PROCESSING_TIME = answers["TASK_PROCESSING_TIME"]
         self.DO_YOU_WORK_REMOTELY = answers["DO_YOU_WORK_REMOTELY"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
             f"FIELD_OF_STUDY: {self.FIELD_OF_STUDY}\n"
             f"REQUIRED_FUNCTIONALITY: {self.REQUIRED_FUNCTIONALITY}\n"

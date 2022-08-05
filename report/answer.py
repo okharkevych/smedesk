@@ -1,7 +1,7 @@
 class Answer:
     CUSTOMER_SUPPORT: str = "Customer Support"
-    ENGINEERING_AND_TECHNICAL: str = "Engineering and technical fields"
-    PHARMACEUTICAL_AND_BIOTECHNOLOGY: str = (
+    ENGINEERING_AND_TECH: str = "Engineering and technical fields"
+    PHARM_AND_BIO: str = (
         "Pharmaceutical and biotechnology areas"
     )
     SCIENTIFIC_AND_ACADEMIC: str = "Scientific and academic fields"
