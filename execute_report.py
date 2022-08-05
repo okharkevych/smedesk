@@ -6,9 +6,9 @@ survey = Survey(
     answers={
         "FIELD_OF_STUDY": Answer.CUSTOMER_SUPPORT,
         "REQUIRED_FUNCTIONALITY": [
-            Answer.CRUD,
+            Answer.GET_THIRD_PARTY_DATA,
             Answer.PROCESS_TEXT_BASED_DATA,
-            Answer.GET_THIRD_PARTY_DATA
+            Answer.CRUD
         ],
         "TASK_PROCESSING_TIME": {
             "time_period": 241,

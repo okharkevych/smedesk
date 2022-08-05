@@ -18,8 +18,10 @@ class Report:
         do_you_work_remotely: str = self.question.do_you_work_remotely()
 
         report_parts: List[str] = [
-            field_of_study, required_functionality,
-            task_processing_time, do_you_work_remotely
+            field_of_study,
+            required_functionality,
+            task_processing_time,
+            do_you_work_remotely
         ]
 
         for report_part in report_parts:

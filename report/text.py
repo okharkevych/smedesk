@@ -1,5 +1,4 @@
 class Text:
-    # Q1 reports
     CUSTOMER_SUPPORT: str = (
         "Lorem ipsum 1. Question - ANSWER_1 dolor sit amet, "
         "consectetur adipiscing elit. Mauris sed ligula vitae tellus "
@@ -46,7 +45,6 @@ class Text:
         "lectus. Mauris pharetra dapibus congue. Suspendisse potenti."
     )
 
-    # Q2 reports
     GET_THIRD_PARTY_DATA_AND_PROCESS_TEXT_DATA_AND_CRUD: str = (
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed "
         "sollicitudin leo in 2. Question - ANSWER_4, ANSWER_3 and "
@@ -99,7 +97,6 @@ class Text:
         "est laborum."
     )
 
-    # Q4 reports
     I_DONT_KNOW: str = (
         "Phasellus ac sem ornare, ANSWER_I_DONT_KNOW "
         "euismod tellus id, sagittis felis. Nullam "
@@ -160,7 +157,6 @@ class Text:
         " ante, eget maximus mi efficitur nec."
     )
 
-    # Q3 reports
     @staticmethod
     def time_more_than_240_minutes(time_period, unit_of_time):
         return (
