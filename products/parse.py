@@ -11,10 +11,18 @@ class Products:
         products: List = []
 
         for product in self.data["results"]:
+            invalid_attributes: bool = (
+                -1.0 <= product["prices"]["current_price"] < 5.0 or
+                product["title"] == "" or
+                ".jpg" not in product["image"] or
+                "www.amazon.com" not in product["full_link"] or
+                "$" not in product["prices"]["currency"]
+            )
+    
             if len(products) == self.amount:
                 break
             else:
-                if product["prices"]["current_price"] == -1.0:
+                if invalid_attributes:
                     continue
                 else:
                     products.append(
