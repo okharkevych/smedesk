@@ -1,0 +1,30 @@
+Product #0:
+    2022 New HP 15 Laptop, 15.6" HD LED Display, Intel Dual-Core Processor, Intel UHD Graphics, 16GB DDR4 RAM, 1TB SSD, Ethernet Port, USB Type-C, Long Battery Life, Windows 11
+    Price: 499.0
+    Link: https://www.amazon.com/dp/B09SZPSTN1/?psc=1
+
+
+Product #1:
+    Asus VivoBook 14" FHD 1080p Laptop, Intel Core i3-1115G4, 12GB RAM, 512GB PCIe SSD, Fingerprint Reader, Backlit Keyboard, HDMI, WiFi, Webcam, Windows 11 Home, Slate Grey
+    Price: 459.0
+    Link: https://www.amazon.com/dp/B09NMMDG3D/?psc=1
+
+
+Product #2:
+    2022 Newest Lenovo Ideapad 3 Laptop, 15.6" HD Touchscreen, 11th Gen Intel Core i3-1115G4 Processor, 8GB DDR4 RAM, 256GB PCIe NVMe SSD, HDMI, Webcam, Wi-Fi 5, Bluetooth, Windows 11 Home, Almond
+    Price: 394.99
+    Link: https://www.amazon.com/dp/B08B6F1NNR/?psc=1
+
+
+Product #3:
+    2022 Acer 15inch HD IPS Chromebook, Intel Dual-Core Celeron Processor Up to 2.55GHz, 4GB RAM, 32GB Storage, Super-Fast WiFi Up to 1300 Mbps, Chrome OS-(Renewed) (Dale Silver)
+    Price: 169.0
+    Link: https://www.amazon.com/dp/B0B3L3YB4N/?psc=1
+
+
+Product #4:
+    2022 Newest HP 15.6" HD Laptop Computer, Intel Celeron Quad-Core N4120(up to 2.6GHz), 16GB DDR4 RAM, 1TB SSD, HDMI, Bluetooth, Webcam, USB-C, RJ45 Ethernet, Windows 11S, Silver, JVQ Mousepad
+    Price: 499.0
+    Link: https://www.amazon.com/dp/B09YCXQYMH/?psc=1
+
+
