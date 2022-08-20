@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 sendgrid = "*"
+django = "*"
+djangorestframework = "*"
 
 [dev-packages]
 
