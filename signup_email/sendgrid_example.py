@@ -1,7 +1,8 @@
 # using SendGrid's Python Library
 # https://github.com/sendgrid/sendgrid-python
 
-# import os
+import os
+
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
@@ -9,7 +10,7 @@ SENDRGID_API_KEY = (
     "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"
 )
 
-html_content_path = "signup_email/sendgrid_template.html"
+html_content_path = "sendgrid_template.html"
 
 with open(html_content_path, "r", encoding='utf-8') as f:
     email_template = f.read()
