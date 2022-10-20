@@ -4,12 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-sendgrid = "*"
 django = "*"
 djangorestframework = "*"
 python-dotenv = "*"
 django-cors-headers = "*"
 django-extensions = "*"
+sendgrid = "*"
 
 [dev-packages]
 

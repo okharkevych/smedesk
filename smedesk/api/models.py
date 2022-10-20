@@ -19,8 +19,9 @@ class ProjectModel(TimestampedModel):
     uid = models.UUIDField(unique=True, null=False, default=uuid.uuid4)
 
 
+# TODO: Make sure the create_user() method actually uses name and terms arguments to create the user
 class UserManager(BaseUserManager):
-    def create_user(self, email, password=None):
+    def create_user(self, name, email, password, terms):
         if not email:
             raise ValueError('Users must have an email address')
 
@@ -34,8 +35,9 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, ProjectModel):
-    # This is here only not to crash Django.
+    name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
+    terms = models.BooleanField()
 
     objects = UserManager()
 
