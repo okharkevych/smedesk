@@ -106,3 +106,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ALLOW_POST_NEW_FILES = True
+
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")

@@ -19,14 +19,15 @@ class ProjectModel(TimestampedModel):
     uid = models.UUIDField(unique=True, null=False, default=uuid.uuid4)
 
 
-# TODO: Make sure the create_user() method actually uses name and terms arguments to create the user
 class UserManager(BaseUserManager):
     def create_user(self, name, email, password, terms):
         if not email:
             raise ValueError('Users must have an email address')
 
         user = self.model(
+            name=name,
             email=self.normalize_email(email),
+            terms=terms
         )
 
         user.set_password(password)

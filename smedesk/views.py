@@ -2,13 +2,22 @@ import json
 from typing import Dict
 
 from django.db.models.query import QuerySet
+from django.db.transaction import atomic
 from django.http.request import HttpRequest
 from django.http.response import JsonResponse
 from rest_framework.decorators import api_view
+from rest_framework.exceptions import APIException
 from rest_framework.serializers import ValidationError
 
 from smedesk.api.models import User
+from smedesk.email.smedesk_email import SIGNUP_TEMPLATE, send_email
 from smedesk.serializers import SignupSerializer
+
+
+class ServiceUnavailable(APIException):
+    status_code = 503
+    default_detail = 'Service Unavailable'
+    default_code = 'service_unavailable'
 
 
 @api_view(['POST'])
@@ -44,18 +53,25 @@ def signup(request: HttpRequest) -> JsonResponse:
             }
         )
 
-    user: User = User.objects.create_user(
-        name=name,
-        email=email,
-        password=password,
-        terms=terms
-    )
-    # TODO: assign template to const
-    signup_template: str = 'd-58f617828d2244979db3a47a1f65dd25'
+    with atomic():
+        user: User = User.objects.create_user(
+            name=name,
+            email=email,
+            password=password,
+            terms=terms
+        )
+
+        try:
+            send_email(to_email=user.email, template=SIGNUP_TEMPLATE)
+        except Exception:
+            raise ServiceUnavailable()
 
     return JsonResponse(
         status=201,
         data={
-            'detail': 'success'
+            'detail': (
+                f'Signup was successful, registration email was sent to '
+                f'{user.email}'
+            ),
         }
     )
