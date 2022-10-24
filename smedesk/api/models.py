@@ -20,12 +20,14 @@ class ProjectModel(TimestampedModel):
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password=None):
+    def create_user(self, name, email, password, terms):
         if not email:
             raise ValueError('Users must have an email address')
 
         user = self.model(
+            name=name,
             email=self.normalize_email(email),
+            terms=terms
         )
 
         user.set_password(password)
@@ -34,8 +36,9 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, ProjectModel):
-    # This is here only not to crash Django.
+    name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
+    terms = models.BooleanField()
 
     objects = UserManager()
 
