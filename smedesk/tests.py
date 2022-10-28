@@ -12,6 +12,13 @@ from smedesk.api.models import User
 
 
 class TestCommon(TestCase):
+    api_client: APIClient = APIClient()
+
+    valid_name: str = 'Oleh Kharkevych'
+    invalid_email: str = 'invalidemail'
+    valid_email: str = 'oleg.kharkevich@gmail.com'
+    valid_password: str = '123456789'
+
     res_mock: Mock = Mock(
         **{
             'status_code': 202,
@@ -54,12 +61,6 @@ class TestCommon(TestCase):
 class TestSignup(TestCommon):
 
     def setUp(self):
-        self.api_client: APIClient = APIClient()
-
-        self.valid_name: str = 'Oleh Kharkevych'
-        self.valid_email: str = 'oleg.kharkevich@gmail.com'
-        self.valid_password: str = '123456789'
-
         self.valid_payload: Dict[str, str] = {
             'name': self.valid_name,
             'email': self.valid_email,
@@ -71,7 +72,7 @@ class TestSignup(TestCommon):
         client = self.api_client
         payload: Dict[str, str] = {
             'name': self.valid_name,
-            'email': 'invalidemail',
+            'email': self.invalid_email,
             'terms': True,
             'password': self.valid_password
         }
@@ -267,4 +268,142 @@ class TestSignup(TestCommon):
         self.assertEqual(
             User.objects.filter(email=payload.get('email')).exists(),
             True
+        )
+
+
+class TestSignin(TestCommon):
+
+    def setUp(self):
+        self.valid_payload: Dict[str, str] = {
+            'email': self.valid_email,
+            'password': self.valid_password
+        }
+
+    def test_empty_email_field(self):
+        client = self.api_client
+        payload: Dict[str, str] = {
+            'email': '',
+            'password': self.valid_password
+        }
+        res: Response = client.post(
+            path='/api/signin/',
+            data=json.dumps(payload),
+            content_type='application/json'
+        )
+
+        self.assertEqual(
+            res.status_code,
+            400
+        )
+
+        self.assertEqual(
+            res.json(),
+            {
+                "email": [
+                    "This field may not be blank."
+                ]
+            }
+        )
+
+    def test_invalid_email(self):
+        client = self.api_client
+        payload: Dict[str, str] = {
+            'email': self.invalid_email,
+            'password': self.valid_password
+        }
+        res: Response = client.post(
+            path='/api/signin/',
+            data=json.dumps(payload),
+            content_type='application/json'
+        )
+
+        self.assertEqual(
+            res.status_code,
+            400
+        )
+
+        self.assertEqual(
+            res.json(),
+            {
+                "email": [
+                    "Enter a valid email address."
+                ]
+            }
+        )
+
+    def test_empty_password_field(self):
+        client = self.api_client
+        payload: Dict[str, str] = {
+            'email': self.valid_email,
+            'password': ''
+        }
+        res: Response = client.post(
+            path='/api/signin/',
+            data=json.dumps(payload),
+            content_type='application/json'
+        )
+
+        self.assertEqual(
+            res.status_code,
+            400
+        )
+
+        self.assertEqual(
+            res.json(),
+            {
+                "password": [
+                    "This field may not be blank."
+                ]
+            }
+        )
+
+    def test_user_does_not_exist(self):
+        client = self.api_client
+        payload = self.valid_payload
+
+        res: Response = client.post(
+            path='/api/signin/',
+            data=json.dumps(payload),
+            content_type='application/json'
+        )
+
+        self.assertEqual(
+            res.status_code,
+            401
+        )
+
+        self.assertEqual(
+            res.json(),
+            {
+                "detail": "Incorrect authentication credentials."
+            }
+        )
+
+    def test_user_exists_wrong_password(self):
+        client = self.api_client
+        payload = self.valid_payload
+
+        User.objects.create_user(
+            name=self.valid_name,
+            email=self.valid_email,
+            terms=True,
+            password='123456781'
+        )
+
+        res: Response = client.post(
+            path='/api/signin/',
+            data=json.dumps(payload),
+            content_type='application/json'
+        )
+
+        self.assertEqual(
+            res.status_code,
+            401
+        )
+
+        self.assertEqual(
+            res.json(),
+            {
+                "detail": "Incorrect authentication credentials."
+            }
         )
