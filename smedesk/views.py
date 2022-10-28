@@ -15,6 +15,7 @@ from smedesk.email.smedesk_email import SIGNUP_TEMPLATE, send_email
 from smedesk.serializers import SignupSerializer, SigninSerializer
 
 
+# TODO: maybe move custome exceptions to common/utils.py
 class ServiceUnavailable(APIException):
     status_code = status.HTTP_503_SERVICE_UNAVAILABLE
     default_detail = 'Service Unavailable'
@@ -100,6 +101,7 @@ def signin(request: HttpRequest) -> JsonResponse:
     if not user_exists:
         raise AuthenticationFailed()
 
+    # TODO: maybe find a way to merge filtered_user & user_object
     user_object = User.objects.get(email=email)
     password_matches: bool = user_object.check_password(raw_password=password)
 

@@ -45,3 +45,7 @@ class User(AbstractBaseUser, ProjectModel):
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+
+class Session(ProjectModel):
+    user = ''
