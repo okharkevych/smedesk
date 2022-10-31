@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.test import APIClient
 
 from smedesk.api.models import User
+from smedesk.settings import SESSION_COOKIE_NAME
 
 
 class TestCommon(TestCase):
@@ -18,6 +19,12 @@ class TestCommon(TestCase):
     invalid_email: str = 'invalidemail'
     valid_email: str = 'oleg.kharkevich@gmail.com'
     valid_password: str = '123456789'
+    signup_payload: Dict[str, str] = {
+        'name': valid_name,
+        'email': valid_email,
+        'terms': True,
+        'password': valid_password
+    }
 
     res_mock: Mock = Mock(
         **{
@@ -59,14 +66,6 @@ class TestCommon(TestCase):
 
 
 class TestSignup(TestCommon):
-
-    def setUp(self):
-        self.valid_payload: Dict[str, str] = {
-            'name': self.valid_name,
-            'email': self.valid_email,
-            'terms': True,
-            'password': self.valid_password
-        }
 
     def test_invalid_email(self):
         client = self.api_client
@@ -182,7 +181,7 @@ class TestSignup(TestCommon):
 
     def test_email_already_exists(self):
         client = self.api_client
-        payload = self.valid_payload
+        payload = self.signup_payload
 
         User.objects.create_user(
             name=self.valid_name,
@@ -213,7 +212,7 @@ class TestSignup(TestCommon):
 
     def test_failed_to_send_email(self):
         client = self.api_client
-        payload = self.valid_payload
+        payload = self.signup_payload
 
         with self.mock_send_error:
             res: Response = client.post(
@@ -241,7 +240,7 @@ class TestSignup(TestCommon):
 
     def test_successful_signup(self):
         client = self.api_client
-        payload = self.valid_payload
+        payload = self.signup_payload
 
         with self.mock_send_success:
             res: Response = client.post(
@@ -274,7 +273,7 @@ class TestSignup(TestCommon):
 class TestSignin(TestCommon):
 
     def setUp(self):
-        self.valid_payload: Dict[str, str] = {
+        self.signin_payload: Dict[str, str] = {
             'email': self.valid_email,
             'password': self.valid_password
         }
@@ -359,7 +358,7 @@ class TestSignin(TestCommon):
 
     def test_user_does_not_exist(self):
         client = self.api_client
-        payload = self.valid_payload
+        payload = self.signin_payload
 
         res: Response = client.post(
             path='/api/signin/',
@@ -381,7 +380,7 @@ class TestSignin(TestCommon):
 
     def test_user_exists_wrong_password(self):
         client = self.api_client
-        payload = self.valid_payload
+        payload = self.signin_payload
 
         User.objects.create_user(
             name=self.valid_name,
@@ -406,4 +405,32 @@ class TestSignin(TestCommon):
             {
                 "detail": "Incorrect authentication credentials."
             }
+        )
+
+    def test_successful_signin(self):
+        client = self.api_client
+        payload = self.signin_payload
+
+        User.objects.create_user(
+            name=self.valid_name,
+            email=self.valid_email,
+            terms=True,
+            password=self.valid_password
+        )
+
+        # TODO: Should content_type be json for signin???
+        res: Response = client.post(
+            path='/api/signin/',
+            data=json.dumps(payload),
+            content_type='application/json'
+        )
+
+        self.assertEqual(
+            res.status_code,
+            200
+        )
+
+        self.assertIn(
+            member=SESSION_COOKIE_NAME,
+            container=res.cookies.keys()
         )
