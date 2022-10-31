@@ -418,7 +418,6 @@ class TestSignin(TestCommon):
             password=self.valid_password
         )
 
-        # TODO: Should content_type be json for signin???
         res: Response = client.post(
             path='/api/signin/',
             data=json.dumps(payload),
