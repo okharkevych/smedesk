@@ -1,23 +1,25 @@
 import json
+from datetime import datetime, timedelta
 from typing import Dict
 
 from django.db.models.query import QuerySet
 from django.db.transaction import atomic
 from django.http.request import HttpRequest
 from django.http.response import JsonResponse
+from django.utils import timezone
+from rest_framework import status
 from rest_framework.decorators import api_view
-from rest_framework.exceptions import APIException
+from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
 
-from smedesk.api.models import User
+from smedesk.api.models import User, Session
+from smedesk.common.custom_exceptions import (
+    ServiceUnavailable,
+    AuthenticationFailed
+)
 from smedesk.email.smedesk_email import SIGNUP_TEMPLATE, send_email
-from smedesk.serializers import SignupSerializer
-
-
-class ServiceUnavailable(APIException):
-    status_code = 503
-    default_detail = 'Service Unavailable'
-    default_code = 'service_unavailable'
+from smedesk.serializers import SignupSerializer, SigninSerializer
+from smedesk.settings import SESSION_COOKIE_NAME
 
 
 @api_view(['POST'])
@@ -67,7 +69,7 @@ def signup(request: HttpRequest) -> JsonResponse:
             raise ServiceUnavailable()
 
     return JsonResponse(
-        status=201,
+        status=status.HTTP_201_CREATED,
         data={
             'detail': (
                 f'Signup was successful, registration email was sent to '
@@ -75,3 +77,44 @@ def signup(request: HttpRequest) -> JsonResponse:
             ),
         }
     )
+
+
+@api_view(['POST'])
+def signin(request: HttpRequest) -> Response:
+    signin_data: Dict = json.loads(request.body)
+
+    serializer: SigninSerializer = SigninSerializer(data=signin_data)
+    serializer.is_valid(raise_exception=True)
+
+    email: str = serializer.data.get('email').lower()
+    password: str = serializer.data.get('password')
+
+    user_queryset: QuerySet = User.objects.filter(email=email)
+    user_exists: bool = user_queryset.exists()
+
+    if not user_exists:
+        raise AuthenticationFailed()
+
+    user = user_queryset.first()
+    password_matches: bool = user.check_password(raw_password=password)
+
+    if not password_matches:
+        raise AuthenticationFailed
+
+    session: Session = Session.objects.create(user=user)
+    response: Response = Response()
+
+    current_time: timezone = timezone.now()
+    time_to_expiration: timedelta = timedelta(days=365 * 100)
+    expiration_date: datetime = current_time + time_to_expiration
+
+    response.set_cookie(
+        key=SESSION_COOKIE_NAME,
+        expires=expiration_date,
+        value=session.token,
+        secure=True,
+        httponly=True,
+        samesite='Strict'
+    )
+
+    return response
