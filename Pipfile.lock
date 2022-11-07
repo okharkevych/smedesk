@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f70906c99bc3005d81f7331374ebb0341b9e870e4f3960ba8861241824551928"
+            "sha256": "b11c92002c7953059bc8461fcb9813c3ee1f28ac94347020de176f46069e0a04"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -42,11 +42,11 @@
         },
         "django": {
             "hashes": [
-                "sha256:26dc24f99c8956374a054bcbf58aab8dc0cad2e6ac82b0fe036b752c00eee793",
-                "sha256:b8d843714810ab88d59344507d4447be8b2cf12a49031363b6eed9f1b9b2280f"
+                "sha256:678bbfc8604eb246ed54e2063f0765f13b321a50526bdc8cb1f943eda7fa31f1",
+                "sha256:6b1de6886cae14c7c44d188f580f8ba8da05750f544c80ae5ad43375ab293cd5"
             ],
             "index": "pypi",
-            "version": "==4.1.2"
+            "version": "==4.1.3"
         },
         "django-cors-headers": {
             "hashes": [
@@ -55,6 +55,14 @@
             ],
             "index": "pypi",
             "version": "==3.13.0"
+        },
+        "django-debug-toolbar": {
+            "hashes": [
+                "sha256:1e3acad24e3d351ba45c6fa2072e4164820307332a776b16c9f06d1f89503465",
+                "sha256:80de23066b624d3970fd296cf02d61988e5d56c31aa0dc4a428970b46e2883a8"
+            ],
+            "index": "pypi",
+            "version": "==3.7.0"
         },
         "django-extensions": {
             "hashes": [
@@ -98,10 +106,10 @@
         },
         "pytz": {
             "hashes": [
-                "sha256:335ab46900b1465e714b4fda4963d87363264eb662aab5e65da039c25f1f5b22",
-                "sha256:c4d88f472f54d615e9cd582a5004d1e5f624854a6a27a6211591c251f22a6914"
+                "sha256:222439474e9c98fced559f1709d89e6c9cbf8d79c794ff3eb9f8800064291427",
+                "sha256:e89512406b793ca39f5971bc999cc538ce125c0e51c27941bef4568b460095e2"
             ],
-            "version": "==2022.5"
+            "version": "==2022.6"
         },
         "requests": {
             "hashes": [
@@ -129,9 +137,9 @@
         },
         "starkbank-ecdsa": {
             "hashes": [
-                "sha256:24422395e8682ac22a5b20ba3d7418d62e1a927aef29e8ddb5e678662be6b643"
+                "sha256:9399c3371b899d4a235b68a1ed7919d202fbf024bd2c863ae8ebdad343c2a63a"
             ],
-            "version": "==2.1.0"
+            "version": "==2.2.0"
         },
         "urllib3": {
             "hashes": [

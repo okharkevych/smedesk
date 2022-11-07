@@ -11,6 +11,7 @@ django-cors-headers = "*"
 django-extensions = "*"
 sendgrid = "*"
 requests = "*"
+django-debug-toolbar = "*"
 
 [dev-packages]
 
