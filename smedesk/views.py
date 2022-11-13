@@ -11,15 +11,22 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
+from rest_framework.viewsets import ViewSet
 
-from smedesk.api.models import User, Session
-from smedesk.common.custom_exceptions import (
+from smedesk.api.authentication.api import (
+    get_authorized_session,
+    PrivateAPIAuthentication
+)
+from smedesk.api.email.smedesk_email import SIGNUP_TEMPLATE, send_email
+from smedesk.api.exceptions.custom_exceptions import (
     ServiceUnavailable,
     AuthenticationFailed
 )
-from smedesk.email.smedesk_email import SIGNUP_TEMPLATE, send_email
-from smedesk.serializers import SignupSerializer, SigninSerializer
-from smedesk.settings import SESSION_COOKIE_NAME
+from smedesk.api.models import User, Session
+from smedesk.api.serializers.signin import SigninSerializer
+from smedesk.api.serializers.signup import SignupSerializer
+from smedesk.api.serializers.user import CurrentUserSerializer
+from smedesk.settings import SESSION_COOKIE_NAME, SESSION_DURATION
 
 
 @api_view(['POST'])
@@ -95,7 +102,7 @@ def signin(request: HttpRequest) -> Response:
     if not user_exists:
         raise AuthenticationFailed()
 
-    user = user_queryset.first()
+    user: User = user_queryset.first()
     password_matches: bool = user.check_password(raw_password=password)
 
     if not password_matches:
@@ -105,7 +112,7 @@ def signin(request: HttpRequest) -> Response:
     response: Response = Response()
 
     current_time: timezone = timezone.now()
-    time_to_expiration: timedelta = timedelta(days=365 * 100)
+    time_to_expiration: timedelta = SESSION_DURATION
     expiration_date: datetime = current_time + time_to_expiration
 
     response.set_cookie(
@@ -118,3 +125,27 @@ def signin(request: HttpRequest) -> Response:
     )
 
     return response
+
+
+@api_view(['POST'])
+def signout(request: HttpRequest) -> Response:
+    session: Session = get_authorized_session(request=request)
+
+    session.last_active = timezone.now()
+    session.is_active = False
+    session.save()
+
+    response: Response = Response()
+    response.delete_cookie(key=SESSION_COOKIE_NAME)
+
+    return response
+
+
+class CurrentUserViewSet(ViewSet):
+    authentication_classes = [PrivateAPIAuthentication]
+
+    @staticmethod
+    def list(request: HttpRequest) -> Response:
+        return Response(
+            CurrentUserSerializer(instance=request.user).data
+        )

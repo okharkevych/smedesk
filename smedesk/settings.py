@@ -1,3 +1,4 @@
+import datetime
 import os
 from pathlib import Path
 
@@ -118,3 +119,5 @@ ALLOW_POST_NEW_FILES = True
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
 
 SESSION_COOKIE_NAME = 'SMEDESK_SESSION'
+
+SESSION_DURATION = datetime.timedelta(days=365)

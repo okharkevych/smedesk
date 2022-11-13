@@ -55,3 +55,4 @@ class Session(ProjectModel):
     )
     token = models.TextField(default=gen_session_token, unique=True)
     last_active = models.DateTimeField(auto_now_add=True, db_index=True)
+    is_active = models.BooleanField(default=True)
