@@ -1,6 +1,6 @@
 import json
 from datetime import datetime, timedelta
-from typing import Dict, Union
+from typing import Dict
 from unittest.mock import Mock, patch
 
 import sendgrid
@@ -14,8 +14,6 @@ from smedesk.settings import SESSION_COOKIE_NAME
 
 
 class TestCommon(TestCase):
-    api_client: APIClient = APIClient()
-
     valid_name: str = 'Oleh Kharkevych'
     invalid_email: str = 'invalidemail'
     valid_email: str = 'oleg.kharkevich@gmail.com'
@@ -82,7 +80,7 @@ class TestCommon(TestCase):
         return test_session
 
     def missing_token_cookie_test(self, endpoint: str):
-        client = self.api_client
+        client: APIClient = APIClient()
 
         res: Response = client.post(
             path=f'/api/{endpoint}/',
@@ -102,7 +100,7 @@ class TestCommon(TestCase):
         )
 
     def session_does_not_exist_test(self, endpoint: str):
-        client = self.api_client
+        client: APIClient = APIClient()
         client.cookies[SESSION_COOKIE_NAME] = 'test_cookie_token'
 
         res: Response = client.post(
@@ -123,7 +121,7 @@ class TestCommon(TestCase):
         )
 
     def session_expired_test(self, endpoint: str):
-        client = self.api_client
+        client: APIClient = APIClient()
         test_user: User = self.create_test_user()
         test_session: Session = Session.objects.create(user=test_user)
 
@@ -153,7 +151,7 @@ class TestCommon(TestCase):
 class TestSignup(TestCommon):
 
     def test_invalid_email(self):
-        client = self.api_client
+        client: APIClient = APIClient()
         payload: Dict[str, str] = {
             'name': self.valid_name,
             'email': self.invalid_email,
@@ -181,7 +179,7 @@ class TestSignup(TestCommon):
         )
 
     def test_password_less_than_min_length(self):
-        client = self.api_client
+        client: APIClient = APIClient()
         payload: Dict[str, str] = {
             'name': self.valid_name,
             'email': self.valid_email,
@@ -209,7 +207,7 @@ class TestSignup(TestCommon):
         )
 
     def test_password_more_than_max_length(self):
-        client = self.api_client
+        client: APIClient = APIClient()
         payload: Dict[str, str] = {
             'name': self.valid_name,
             'email': self.valid_email,
@@ -237,7 +235,7 @@ class TestSignup(TestCommon):
         )
 
     def test_unaccepted_terms_checkbox(self):
-        client = self.api_client
+        client: APIClient = APIClient()
         payload: Dict[str, str] = {
             'name': self.valid_name,
             'email': self.valid_email,
@@ -265,7 +263,7 @@ class TestSignup(TestCommon):
         )
 
     def test_email_already_exists(self):
-        client = self.api_client
+        client: APIClient = APIClient()
         payload = self.signup_payload
 
         self.create_test_user()
@@ -291,7 +289,7 @@ class TestSignup(TestCommon):
         )
 
     def test_failed_to_send_email(self):
-        client = self.api_client
+        client: APIClient = APIClient()
         payload = self.signup_payload
 
         with self.mock_send_error:
@@ -319,7 +317,7 @@ class TestSignup(TestCommon):
         )
 
     def test_successful_signup(self):
-        client = self.api_client
+        client: APIClient = APIClient()
         payload = self.signup_payload
 
         with self.mock_send_success:
@@ -359,7 +357,7 @@ class TestSignin(TestCommon):
         }
 
     def test_empty_email_field(self):
-        client = self.api_client
+        client: APIClient = APIClient()
         payload: Dict[str, str] = {
             'email': '',
             'password': self.valid_password
@@ -385,7 +383,7 @@ class TestSignin(TestCommon):
         )
 
     def test_invalid_email(self):
-        client = self.api_client
+        client: APIClient = APIClient()
         payload: Dict[str, str] = {
             'email': self.invalid_email,
             'password': self.valid_password
@@ -411,7 +409,7 @@ class TestSignin(TestCommon):
         )
 
     def test_empty_password_field(self):
-        client = self.api_client
+        client: APIClient = APIClient()
         payload: Dict[str, str] = {
             'email': self.valid_email,
             'password': ''
@@ -437,7 +435,7 @@ class TestSignin(TestCommon):
         )
 
     def test_user_does_not_exist(self):
-        client = self.api_client
+        client: APIClient = APIClient()
         payload = self.signin_payload
 
         res: Response = client.post(
@@ -459,7 +457,7 @@ class TestSignin(TestCommon):
         )
 
     def test_user_exists_wrong_password(self):
-        client = self.api_client
+        client: APIClient = APIClient()
         payload = self.signin_payload
 
         User.objects.create_user(
@@ -488,7 +486,7 @@ class TestSignin(TestCommon):
         )
 
     def test_successful_signin(self):
-        client = self.api_client
+        client: APIClient = APIClient()
         payload = self.signin_payload
 
         self.create_test_user()
@@ -510,8 +508,6 @@ class TestSignin(TestCommon):
         )
 
 
-# TODO: return original functions for 1st 3 tests if methods from TestCommon
-#       are discontinued.
 class TestSignout(TestCommon):
 
     def test_missing_token_cookie(self):
@@ -524,7 +520,7 @@ class TestSignout(TestCommon):
         self.session_expired_test(endpoint='signout')
 
     def test_successful_signout(self):
-        client = self.api_client
+        client: APIClient = APIClient()
         test_session = self.create_test_session()
         client.cookies[SESSION_COOKIE_NAME] = test_session.token
 
@@ -545,85 +541,19 @@ class TestSignout(TestCommon):
         )
 
 
-# TODO: remove commented function options when the question is resolved.
 class TestCurrentUser(TestCommon):
 
     def test_missing_token_cookie(self):
         self.missing_token_cookie_test(endpoint='current_user')
 
-        # client = self.api_client
-        #
-        # res: Response = client.post(
-        #     path='/api/current_user/',
-        #     content_type='application/json'
-        # )
-        #
-        # self.assertEqual(
-        #     res.status_code,
-        #     401
-        # )
-        #
-        # self.assertEqual(
-        #     res.json(),
-        #     {
-        #         "detail": "Authorization cookie missing."
-        #     }
-        # )
-
     def test_session_does_not_exist(self):
         self.session_does_not_exist_test(endpoint='current_user')
-
-        # client = self.api_client
-        # client.cookies[SESSION_COOKIE_NAME] = 'test_cookie_token'
-        #
-        # res: Response = client.post(
-        #     path='/api/current_user/',
-        #     content_type='application/json'
-        # )
-        #
-        # self.assertEqual(
-        #     res.status_code,
-        #     401
-        # )
-        #
-        # self.assertEqual(
-        #     res.json(),
-        #     {
-        #         "detail": "Invalid session or inactive user."
-        #     }
-        # )
 
     def test_session_expired(self):
         self.session_expired_test(endpoint='current_user')
 
-        # client = self.api_client
-        # test_user: User = self.create_test_user()
-        # test_session: Session = Session.objects.create(user=test_user)
-        #
-        # test_session.last_active = datetime.now() - timedelta(days=1000)
-        # test_session.save()
-        #
-        # client.cookies[SESSION_COOKIE_NAME] = test_session.token
-        #
-        # res: Response = client.post(
-        #     path='/api/current_user/',
-        #     content_type='application/json'
-        # )
-        #
-        # self.assertEqual(
-        #     res.status_code,
-        #     401
-        # )
-        #
-        # self.assertEqual(
-        #     res.json(),
-        #     {
-        #         "detail": "Invalid session or inactive user."
-        #     }
-        # )
-
     def test_get_current_user(self):
-        client = self.api_client
+        client: APIClient = APIClient()
         test_session = self.create_test_session()
         client.cookies[SESSION_COOKIE_NAME] = test_session.token
 
