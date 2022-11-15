@@ -5,7 +5,7 @@ from django.conf import settings
 from django.urls import path, include
 from rest_framework_nested.routers import SimpleRouter
 
-from smedesk.views import signup, signin, signout, CurrentUserViewSet
+from smedesk.api.views import signup, signin, signout, CurrentUserViewSet
 
 viewsets: List[Dict] = [
     {
