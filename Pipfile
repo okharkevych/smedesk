@@ -12,6 +12,7 @@ django-extensions = "*"
 sendgrid = "*"
 requests = "*"
 django-debug-toolbar = "*"
+drf-nested-routers = "*"
 
 [dev-packages]
 
