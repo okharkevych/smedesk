@@ -1,10 +1,11 @@
 import json
-from datetime import datetime, timedelta
+from datetime import timedelta
 from typing import Dict
 from unittest.mock import Mock, patch
 
 import sendgrid
 from django.test import TestCase
+from django.utils import timezone
 from requests import HTTPError
 from rest_framework.response import Response
 from rest_framework.test import APIClient
@@ -125,7 +126,7 @@ class TestCommon(TestCase):
         test_user: User = self.create_test_user()
         test_session: Session = Session.objects.create(user=test_user)
 
-        test_session.last_active = datetime.now() - timedelta(days=1000)
+        test_session.last_active = timezone.now() - timedelta(days=1000)
         test_session.save()
 
         client.cookies[SESSION_COOKIE_NAME] = test_session.token
@@ -528,7 +529,7 @@ class TestSignout(TestCommon):
             path='/api/signout/',
             content_type='application/json'
         )
-        res_cookie: str = res.cookies.output()
+        res_cookie: str = res.cookies.get(SESSION_COOKIE_NAME)
 
         self.assertEqual(
             res.status_code,
@@ -536,8 +537,8 @@ class TestSignout(TestCommon):
         )
 
         self.assertIn(
-            f'{SESSION_COOKIE_NAME}=""',
-            res_cookie
+            res_cookie.value,
+            ''
         )
 
 
